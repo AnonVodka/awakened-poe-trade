@@ -197,16 +197,9 @@ export function createFilters (
     }
   }
 
-  if (item.sockets?.linked) {
-    filters.linkedSockets = {
-      value: item.sockets.linked,
-      disabled: false
-    }
-  }
-
-  if (item.sockets?.white) {
-    filters.whiteSockets = {
-      value: item.sockets.white,
+  if (item.sockets?.runes) {
+    filters.runeSockets = {
+      value: item.sockets.runes,
       disabled: false
     }
   }
@@ -344,21 +337,23 @@ function createGemFilters (
   filters: ItemFilters,
   opts: CreateOptions
 ) {
-  if (!item.info.gem!.transfigured) {
-    filters.searchExact = {
-      baseType: item.info.name,
-      baseTypeTrade: t(opts, item.info)
-    }
-  } else {
-    const normalGem = ITEM_BY_REF('GEM', item.info.gem!.normalVariant!)![0]
-    filters.searchExact = {
-      baseType: item.info.name,
-      baseTypeTrade: t(opts, normalGem)
-    }
-    filters.discriminator = {
-      trade: item.info.tradeDisc!
-    }
+  // if (!item.info.gem!.transfigured) {
+  filters.searchExact = {
+    baseType: item.info.name,
+    baseTypeTrade: t(opts, item.info)
   }
+  // }
+  // Alternate quality gems - Frostblades of the Catibasis
+  // else {
+  //   const normalGem = ITEM_BY_REF('GEM', item.info.gem!.normalVariant!)![0]
+  //   filters.searchExact = {
+  //     baseType: item.info.name,
+  //     baseTypeTrade: t(opts, normalGem)
+  //   }
+  //   filters.discriminator = {
+  //     trade: item.info.tradeDisc!
+  //   }
+  // }
 
   filters.corrupted = {
     value: item.isCorrupted

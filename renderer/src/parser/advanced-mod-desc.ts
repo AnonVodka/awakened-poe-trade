@@ -2,12 +2,14 @@ import { CLIENT_STRINGS as _$ } from '@/assets/data'
 import type { ParsedStat } from './stat-translations'
 import { ModifierType } from './modifiers'
 import { removeLinesEnding } from './Parser'
+import { STAT_BY_REF } from './../assets/data/index'
 
 export const SCOURGE_LINE = ' (scourge)'
 export const ENCHANT_LINE = ' (enchant)'
 export const IMPLICIT_LINE = ' (implicit)'
 const CRAFTED_LINE = ' (crafted)'
 const FRACTURED_LINE = ' (fractured)'
+export const RUNE_LINE = ' (rune)'
 
 export interface ParsedModifier {
   info: ModifierInfo
@@ -26,7 +28,7 @@ export interface ModifierInfo {
 
 export function parseModInfoLine (line: string, type: ModifierType): ModifierInfo {
   const [modText, xText2, xText3] = line
-    .slice(1, -1)
+    // .slice(1, -1)
     .split('\u2014')
     .map(_ => _.trim())
 
@@ -88,8 +90,12 @@ export function parseModInfoLine (line: string, type: ModifierType): ModifierInf
   return { type, generation, name, tier, rank, tags, rollIncr }
 }
 
-export function isModInfoLine (line: string): boolean {
-  return line.startsWith('{') && line.endsWith('}')
+export function isModInfoLine(line: string): boolean {
+  // replace numbers with # and search string by reference in stats info
+  const modText = line.replace(/\d+/g, '#')
+  const matched = STAT_BY_REF(modText);
+  return matched != undefined;
+  // return line.startsWith('{') && line.endsWith('}')
 }
 
 interface GroupedModLines {
@@ -104,11 +110,13 @@ export function * groupLinesByMod (lines: string[]): Generator<GroupedModLines, 
 
   let last: GroupedModLines | undefined
   for (const line of lines) {
-    if (!isModInfoLine(line)) {
-      last!.statLines.push(line)
-    } else {
+    // ModInfoLines sind in poe1 die lines, welche über den eigentlichen mods steht
+    // if (!isModInfoLine(line)) {
+      // last?.statLines.push(line)
+    // } else
+    {
       if (last) { yield last }
-      last = { modLine: line, statLines: [] }
+      last = { modLine: line, statLines: [line] }
     }
   }
   yield last!
@@ -133,6 +141,9 @@ export function parseModType (lines: string[]): { modType: ModifierType, lines: 
   } else if (lines.some(line => line.endsWith(CRAFTED_LINE))) {
     modType = ModifierType.Crafted
     lines = removeLinesEnding(lines, CRAFTED_LINE)
+  } else if (lines.some(line => line.endsWith(RUNE_LINE))) {
+    modType = ModifierType.Rune
+    lines = removeLinesEnding(lines, RUNE_LINE)
   } else {
     modType = ModifierType.Explicit
   }

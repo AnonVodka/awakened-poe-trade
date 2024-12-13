@@ -47,6 +47,11 @@ export enum ItemCategory {
   SanctumRelic = 'Sanctum Relic',
   Tincture = 'Tincture',
   Charm = 'Charm',
+  Crossbow = 'Crossbow',
+  SkillGem = 'Skill Gem',
+  SupportGem = 'Support Gem',
+  MetaGem = 'Meta Gem',
+  Focus = 'Focus',
 }
 
 export const WEAPON_ONE_HANDED_MELEE = new Set([
@@ -75,6 +80,7 @@ export const WEAPONE_TWO_HANDED_MELEE = new Set([
 export const WEAPON = new Set([
   ItemCategory.FishingRod,
   ItemCategory.Bow,
+  ItemCategory.Crossbow,
   ...WEAPON_ONE_HANDED,
   ...WEAPONE_TWO_HANDED_MELEE
 ])
@@ -84,7 +90,8 @@ export const ARMOUR = new Set([
   ItemCategory.Boots,
   ItemCategory.Gloves,
   ItemCategory.Helmet,
-  ItemCategory.Shield
+  ItemCategory.Shield,
+  ItemCategory.Focus
 ])
 
 export const ACCESSORY = new Set([

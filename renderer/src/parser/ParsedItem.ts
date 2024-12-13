@@ -39,8 +39,7 @@ export interface ParsedItem {
   talismanTier?: number
   quality?: number
   sockets?: {
-    linked?: number // only 5 or 6
-    white: number
+    runes: number
   }
   stackSize?: { value: number, max: number }
   isUnidentified: boolean

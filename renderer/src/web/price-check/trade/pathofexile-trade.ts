@@ -48,7 +48,11 @@ export const CATEGORY_TO_TRADE_ID = new Map([
   [ItemCategory.Trinket, 'accessory.trinket'],
   [ItemCategory.SanctumRelic, 'sanctum.relic'],
   [ItemCategory.Tincture, 'tincture'],
-  [ItemCategory.Charm, 'azmeri.charm']
+  [ItemCategory.Charm, 'azmeri.charm'],
+  [ItemCategory.Crossbow, 'weapon.crossbow'],
+  [ItemCategory.SkillGem, 'gem.activegem'],
+  [ItemCategory.SupportGem, 'gem.supportgem'],
+  [ItemCategory.MetaGem, 'gem.metagem']
 ])
 
 const TOTAL_MODS_TEXT = {
@@ -111,14 +115,6 @@ interface TradeRequest { /* eslint-disable camelcase */
           }
         }
       }
-      socket_filters?: {
-        filters: {
-          links?: FilterRange
-          sockets?: {
-            w?: number
-          }
-        }
-      }
       misc_filters?: {
         filters: {
           ilvl?: FilterRange
@@ -129,9 +125,14 @@ interface TradeRequest { /* eslint-disable camelcase */
           mirrored?: FilterBoolean
           identified?: FilterBoolean
           stack_size?: FilterRange
+          alternate_art?: FilterBoolean
+          area_level?: FilterRange
+          gem_sockets?: FilterRange	
+          sanctum_gold?: FilterRange
+          unidentified_tier?: FilterRange
         }
       }
-      armour_filters?: {
+      equipment_filters?: {
         filters: {
           ar?: FilterRange
           es?: FilterRange
@@ -139,25 +140,33 @@ interface TradeRequest { /* eslint-disable camelcase */
           ward?: FilterRange
           block?: FilterRange
           base_defence_percentile?: FilterRange
-        }
-      }
-      weapon_filters?: {
-        filters: {
           dps?: FilterRange
           pdps?: FilterRange
           edps?: FilterRange
           crit?: FilterRange
           aps?: FilterRange
+          rune_socket?: FilterRange
+          spirit?: FilterRange
+        }
+      }
+      req_filters?: {
+        filters: {
+          dex?: FilterRange
+          int?: FilterRange
+          lvl?: FilterRange
+          str?: FilterRange
         }
       }
       map_filters?: {
         filters: {
+          map_bonus?: FilterRange
           map_tier?: FilterRange
           map_blighted?: FilterBoolean
           map_uberblighted?: FilterBoolean
           area_level?: FilterRange
         }
       }
+      // Old poe1 stuff
       heist_filters?: {
         filters: {
           heist_wings?: FilterRange
@@ -261,6 +270,7 @@ export function createTradeRequest (filters: ItemFilters, stats: StatFilter[], i
   }
   const { query } = body
 
+
   if (filters.trade.currency) {
     propSet(query.filters, 'trade_filters.filters.price.option', filters.trade.currency)
   }
@@ -341,12 +351,8 @@ export function createTradeRequest (filters: ItemFilters, stats: StatFilter[], i
     propSet(query.filters, 'misc_filters.filters.stack_size.min', filters.stackSize.value)
   }
 
-  if (filters.linkedSockets && !filters.linkedSockets.disabled) {
-    propSet(query.filters, 'socket_filters.filters.links.min', filters.linkedSockets.value)
-  }
-
-  if (filters.whiteSockets && !filters.whiteSockets.disabled) {
-    propSet(query.filters, 'socket_filters.filters.sockets.w', filters.whiteSockets.value)
+  if (filters.runeSockets && !filters.runeSockets.disabled) {
+    propSet(query.filters, 'equipment_filters.filters.rune_sockets.min', filters.runeSockets.value)
   }
 
   if (filters.mapTier && !filters.mapTier.disabled) {
@@ -424,50 +430,55 @@ export function createTradeRequest (filters: ItemFilters, stats: StatFilter[], i
 
     const input = stat.roll!
     switch (stat.tradeId[0] as InternalTradeId) {
-      case 'item.base_percentile':
-        propSet(query.filters, 'armour_filters.filters.base_defence_percentile.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'armour_filters.filters.base_defence_percentile.max', typeof input.max === 'number' ? input.max : undefined)
-        break
+      // case 'item.base_percentile':
+      //   propSet(query.filters, 'equipment_filters.filters.base_defence_percentile.min', typeof input.min === 'number' ? input.min : undefined)
+      //   propSet(query.filters, 'equipment_filters.filters.base_defence_percentile.max', typeof input.max === 'number' ? input.max : undefined)
+      //   break
       case 'item.armour':
-        propSet(query.filters, 'armour_filters.filters.ar.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'armour_filters.filters.ar.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.ar.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.ar.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.evasion_rating':
-        propSet(query.filters, 'armour_filters.filters.ev.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'armour_filters.filters.ev.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.ev.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.ev.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.energy_shield':
-        propSet(query.filters, 'armour_filters.filters.es.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'armour_filters.filters.es.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.es.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.es.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.ward':
-        propSet(query.filters, 'armour_filters.filters.ward.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'armour_filters.filters.ward.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.ward.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.ward.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.block':
-        propSet(query.filters, 'armour_filters.filters.block.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'armour_filters.filters.block.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.block.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.block.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.total_dps':
-        propSet(query.filters, 'weapon_filters.filters.dps.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'weapon_filters.filters.dps.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.dps.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.dps.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.physical_dps':
-        propSet(query.filters, 'weapon_filters.filters.pdps.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'weapon_filters.filters.pdps.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.pdps.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.pdps.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.elemental_dps':
-        propSet(query.filters, 'weapon_filters.filters.edps.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'weapon_filters.filters.edps.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.edps.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.edps.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.crit':
-        propSet(query.filters, 'weapon_filters.filters.crit.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'weapon_filters.filters.crit.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.crit.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.crit.max', typeof input.max === 'number' ? input.max : undefined)
         break
       case 'item.aps':
-        propSet(query.filters, 'weapon_filters.filters.aps.min', typeof input.min === 'number' ? input.min : undefined)
-        propSet(query.filters, 'weapon_filters.filters.aps.max', typeof input.max === 'number' ? input.max : undefined)
+        propSet(query.filters, 'equipment_filters.filters.aps.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.aps.max', typeof input.max === 'number' ? input.max : undefined)
         break
+      case 'item.spirit':
+        propSet(query.filters, 'equipment_filters.filters.spirit.min', typeof input.min === 'number' ? input.min : undefined)
+        propSet(query.filters, 'equipment_filters.filters.spirit.max', typeof input.max === 'number' ? input.max : undefined)
+        break
+
     }
   }
 
@@ -528,7 +539,7 @@ export async function requestTradeResultList (body: TradeRequest, leagueId: stri
 
     await RateLimiter.waitMulti(RATE_LIMIT_RULES.SEARCH)
 
-    const response = await Host.proxy(`${getTradeEndpoint()}/api/trade/search/${leagueId}`, {
+    const response = await Host.proxy(`${getTradeEndpoint()}/api/trade2/search/${leagueId}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -561,7 +572,7 @@ export async function requestResults (
   if (!data) {
     await RateLimiter.waitMulti(RATE_LIMIT_RULES.FETCH)
 
-    const response = await Host.proxy(`${getTradeEndpoint()}/api/trade/fetch/${resultIds.join(',')}?query=${queryId}`)
+    const response = await Host.proxy(`${getTradeEndpoint()}/api/trade2/fetch/${resultIds.join(',')}?query=${queryId}`)
     adjustRateLimits(RATE_LIMIT_RULES.FETCH, response.headers)
 
     const _data = await response.json() as TradeResponse<{ result: Array<FetchResult | null> }>

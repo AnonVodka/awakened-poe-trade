@@ -1,9 +1,9 @@
 import { defineConfig } from 'vitepress'
 
-const BASE = '/awakened-poe-trade/'
+const BASE = '/corrupted-poe2-trade/'
 
 export default defineConfig({
-  title: 'Awakened PoE Trade',
+  title: 'Corrupted PoE2 Trade',
   description: 'App for price-checking items in Path of Exile',
   base: BASE,
   mpa: true,

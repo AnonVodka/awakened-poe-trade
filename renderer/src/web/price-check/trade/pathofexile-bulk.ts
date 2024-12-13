@@ -66,7 +66,7 @@ async function requestTradeResultList (body: TradeRequest, leagueId: string): Pr
 
     await RateLimiter.waitMulti(RATE_LIMIT_RULES.EXCHANGE)
 
-    const response = await Host.proxy(`${getTradeEndpoint()}/api/trade/exchange/${leagueId}`, {
+    const response = await Host.proxy(`${getTradeEndpoint()}/api/trade2/exchange/${leagueId}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -74,6 +74,7 @@ async function requestTradeResultList (body: TradeRequest, leagueId: string): Pr
       },
       body: JSON.stringify(body)
     })
+    console.log(response)
     adjustRateLimits(RATE_LIMIT_RULES.EXCHANGE, response.headers)
 
     const _data = await response.json() as TradeResponse<SearchResult>

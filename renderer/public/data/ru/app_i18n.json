@@ -81,7 +81,7 @@
     "area_level": "Ур. области: {0}",
     "heist_wings_revealed": "Крыльев обнаружено: {0}",
     "linked_sockets": "Связи: {0}",
-    "white_sockets": "Белые: {0}",
+    "rune_sockets": "Белые: {0}",
     "quality": "Качество: {0}",
     "gem_level": "Уровень: {0}",
     "sentinel_charge": "Заряд: {0}",
@@ -288,7 +288,7 @@
     "stack": "Стак"
   },
   "settings": {
-    "title": "Настройки - Awakened PoE Trade",
+    "title": "Настройки - Bduget PoE Trade",
     "language": "Язык",
     "private_league": "или Приватная лига",
     "account_name": "Имя учетной записи",

@@ -30,12 +30,12 @@ export const QUALITY_STATS = {
       stat('#% increased Armour, Evasion and Energy Shield')
     ]
   },
-  WARD: {
-    flat: [stat('+# to Ward')],
-    incr: [
-      stat('#% increased Ward')
-    ]
-  },
+  // WARD: {
+  //   flat: [stat('+# to Ward')],
+  //   incr: [
+  //     stat('#% increased Ward')
+  //   ]
+  // },
   PHYSICAL_DAMAGE: {
     flat: [stat('Adds # to # Physical Damage')],
     incr: [

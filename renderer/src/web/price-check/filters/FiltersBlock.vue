@@ -21,8 +21,8 @@
         :filter="filters.itemLevel" :name="t('item.item_level')" />
       <filter-btn-numeric v-if="filters.stackSize"
         :filter="filters.stackSize" :name="t('item.stock')" />
-      <filter-btn-numeric v-if="filters.whiteSockets"
-        :filter="filters.whiteSockets" :name="t('item.white_sockets')" />
+      <filter-btn-numeric v-if="filters.runeSockets"
+        :filter="filters.runeSockets" :name="t('item.rune_sockets')" />
       <filter-btn-numeric v-if="filters.gemLevel"
         :filter="filters.gemLevel" :name="t('item.gem_level')" />
       <filter-btn-numeric v-if="filters.quality"

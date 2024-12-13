@@ -1,0 +1,9 @@
+.cache
+descriptions/*
+tables/*
+!*/**/.keep
+_Core.gql
+api_items.json
+api_stats.json
+items_dump.json
+mods_dump.json

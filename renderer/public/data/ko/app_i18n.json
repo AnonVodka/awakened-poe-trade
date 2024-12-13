@@ -61,7 +61,7 @@
     "area_level": "지역 레벨: {0}",
     "heist_wings_revealed": "드러낸 부속 건물: {0}",
     "linked_sockets": "연결부: {0}",
-    "white_sockets": "흰 홈: {0}",
+    "rune_sockets": "흰 홈: {0}",
     "quality": "퀄리티: {0}",
     "gem_level": "젬 레벨: {0}",
     "sentinel_charge": "Charge: {0}",
@@ -271,7 +271,7 @@
     "stack": "스택"
   },
   "settings": {
-    "title": "세팅 - Awakened PoE Trade",
+    "title": "세팅 - Corrupted PoE2 Trade",
     "language": "언어",
     "private_league": "개인리그",
     "account_name": "계정명",

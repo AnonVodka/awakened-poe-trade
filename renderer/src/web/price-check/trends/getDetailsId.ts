@@ -113,7 +113,7 @@ function forUniqueItem (item: ParsedItem) {
       (item.category === ItemCategory.Flask) ? null
         : (item.category === ItemCategory.SanctumRelic) ? 'Relic'
             : item.info.unique.base,
-      (item.sockets?.linked) ? `${item.sockets.linked}L` : null
+      null
     ])
   }
 }

@@ -1,0 +1,42 @@
+{
+    "patch": "4.1.0.10.2",
+    "translations": ["English"],
+    "tables": [
+        {
+            "name": "BaseItemTypes",
+            "columns": ["Id", "Name", "ItemClassesKey", "DropLevel", "TradeMarketCategory"]
+        },
+        {
+            "name": "ItemClasses",
+            "columns": ["Id", "Name", "ItemClassCategory", "TradeMarketCategory"]
+        },
+        {
+            "name": "ArmourTypes",
+            "columns": ["BaseItemTypesKey", "ArmourMin", "ArmourMax", "EvasionMin", "EvasionMax", "EnergyShieldMin", "EnergyShieldMax"]
+        },
+        {
+            "name": "WeaponTypes",
+            "columns": ["BaseItemTypesKey", "DamageMin", "DamageMax"]
+        },
+        {
+            "name": "ItemClassCategories",
+            "columns": ["Id", "Text"]
+        },
+        {
+            "name": "SkillGems",
+            "columns": ["BaseItemTypesKey", "IsVaalVariant", "IsSupport" ]
+        },
+        {
+            "name": "SkillGemInfo",
+            "columns": ["Id", "Description", "SkillGemsKey"]
+        },
+        {
+            "name": "Mods",
+            "columns": ["Id", "Domain", "Name", "StatsKey1", "StatsKey2", "StatsKey3", "StatsKey4"]
+        },
+        {
+            "name": "Stats",
+            "columns": ["Id", "Text", "HASH32"]
+        }
+    ]
+}

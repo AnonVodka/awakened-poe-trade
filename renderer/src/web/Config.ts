@@ -72,9 +72,9 @@ export async function initConfig () {
 
     // TODO
     // dialog.showErrorBox(
-    //   'Awakened PoE Trade - Incompatible configuration',
+    //   'Corrupted PoE2 Trade - Incompatible configuration',
     //   // ----------------------
-    //   'You are trying to use an older version of Awakened PoE Trade with a newer incompatible configuration file.\n' +
+    //   'You are trying to use an older version of Corrupted PoE2 Trade with a newer incompatible configuration file.\n' +
     //   'You need to install the latest version to continue using it.'
     // )
   }
@@ -153,7 +153,7 @@ export const defaultConfig = (): Config => ({
   }],
   clientLog: null,
   gameConfig: null,
-  windowTitle: 'Path of Exile',
+  windowTitle: 'Path of Exile 2',
   logKeys: false,
   accountName: '',
   stashScroll: true,

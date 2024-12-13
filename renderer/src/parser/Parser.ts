@@ -12,7 +12,7 @@ import { linesToStatStrings, tryParseTranslation, getRollOrMinmaxAvg } from './s
 import { ItemCategory } from './meta'
 import { IncursionRoom, ParsedItem, ItemInfluence, ItemRarity } from './ParsedItem'
 import { magicBasetype } from './magic-name'
-import { isModInfoLine, groupLinesByMod, parseModInfoLine, parseModType, ModifierInfo, ParsedModifier, ENCHANT_LINE, SCOURGE_LINE, IMPLICIT_LINE } from './advanced-mod-desc'
+import { isModInfoLine, groupLinesByMod, parseModInfoLine, parseModType, ModifierInfo, ParsedModifier, ENCHANT_LINE, SCOURGE_LINE, IMPLICIT_LINE, RUNE_LINE } from './advanced-mod-desc'
 import { calcPropPercentile, QUALITY_STATS } from './calc-q20'
 
 type SectionParseResult =
@@ -62,6 +62,7 @@ const parsers: Array<ParserFn | { virtual: VirtualParserFn }> = [
   parseLogbookArea,
   parseModifiers, // enchant
   parseModifiers, // scourge
+  parseModifiers, // runes
   parseModifiers, // implicit
   parseModifiers, // explicit
   { virtual: transformToLegacyModifiers },
@@ -474,20 +475,9 @@ function parseSockets (section: string[], item: ParsedItem) {
     let sockets = section[0].slice(_$.SOCKETS.length).trimEnd()
 
     item.sockets = {
-      white: (sockets.split('W').length - 1),
-      linked: undefined
+      runes: (sockets.split('S').length - 1)
     }
 
-    sockets = sockets.replace(/[^ -]/g, '#')
-    if (sockets === '#-#-#-#-#-#') {
-      item.sockets.linked = 6
-    } else if (
-      sockets === '# #-#-#-#-#' ||
-      sockets === '#-#-#-#-# #' ||
-      sockets === '#-#-#-#-#'
-    ) {
-      item.sockets.linked = 5
-    }
     return 'SECTION_PARSED'
   }
   return 'SECTION_SKIPPED'
@@ -627,6 +617,7 @@ function parseModifiers (section: string[], item: ParsedItem) {
   const recognizedLine = section.find(line =>
     line.endsWith(ENCHANT_LINE) ||
     line.endsWith(SCOURGE_LINE) ||
+    line.endsWith(RUNE_LINE) ||
     isModInfoLine(line)
   )
 
@@ -649,7 +640,7 @@ function parseModifiers (section: string[], item: ParsedItem) {
     const modInfo: ModifierInfo = {
       type: recognizedLine.endsWith(ENCHANT_LINE)
         ? ModifierType.Enchant
-        : ModifierType.Scourge,
+        : recognizedLine.endsWith(RUNE_LINE) ? ModifierType.Rune : ModifierType.Scourge,
       tags: []
     }
     parseStatsFromMod(lines, item, { info: modInfo, stats: [] })
@@ -944,9 +935,10 @@ function calcBasePercentile (item: ParsedItem) {
     item.basePercentile = calcPropPercentile(item.armourEV, info.ev, QUALITY_STATS.EVASION, item)
   } else if (item.armourES && info.es) {
     item.basePercentile = calcPropPercentile(item.armourES, info.es, QUALITY_STATS.ENERGY_SHIELD, item)
-  } else if (item.armourWARD && info.ward) {
-    item.basePercentile = calcPropPercentile(item.armourWARD, info.ward, QUALITY_STATS.WARD, item)
   }
+  // else if (item.armourWARD && info.ward) {
+  //   item.basePercentile = calcPropPercentile(item.armourWARD, info.ward, QUALITY_STATS.WARD, item)
+  // }
 }
 
 export function removeLinesEnding (

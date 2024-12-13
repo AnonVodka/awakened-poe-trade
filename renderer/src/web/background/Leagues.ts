@@ -50,14 +50,18 @@ export const useLeagues = createGlobalState(() => {
     error.value = null
 
     try {
-      const response = await Host.proxy(`${poeWebApi()}/api/leagues?type=main&realm=pc`)
+      const response = await Host.proxy(`${poeWebApi()}/api/trade2/data/leagues?type=main&realm=pc`)
       if (!response.ok) throw new Error(JSON.stringify(Object.fromEntries(response.headers)))
-      const leagues: ApiLeague[] = await response.json()
+      // leagues are stored in "result" field
+      const leagues: ApiLeague[] = (await response.json()).result
       tradeLeagues.value = leagues
         .filter(league =>
-          !PERMANENT_HC.includes(league.id) &&
-          !league.rules.some(rule => rule.id === 'NoParties' ||
-            (rule.id === 'HardMode' && !league.event)))
+          !PERMANENT_HC.includes(league.id)
+          // && !league.rules.some(
+          //     rule => rule.id === 'NoParties'
+          //     || (rule.id === 'HardMode' && !league.event)
+          // )
+        )
         .map(league => {
           return { id: league.id, isPopular: true }
         })
@@ -74,6 +78,7 @@ export const useLeagues = createGlobalState(() => {
       }
     } catch (e) {
       error.value = (e as Error).message
+      // console.log(e.message);
     } finally {
       isLoading.value = false
     }
