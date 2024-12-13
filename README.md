@@ -5,7 +5,7 @@
 [![](https://user-images.githubusercontent.com/4292308/153364565-7a545d26-e617-4a33-a919-ff90d8feda3d.svg)](https://github.com/SnosMe/awakened-poe-trade/issues/22)
 
 
-➡ [Download for Windows & Linux](https://snosme.github.io/awakened-poe-trade/download) ⬅
+➡ [Download for Windows](https://github.com/AnonVodka/corrupted-poe2-trade/releases) ⬅
 
 ## Tool showcase
 
@@ -19,6 +19,8 @@ See [DEVELOPING.md](./DEVELOPING.md)
 
 ### Acknowledgments
 
+- [Awakend PoE Trade](https://github.com/SnosMe/awakened-poe-trade)
+- [poe-dat-view](https://github.com/SnosMe/poe-dat-viewer)
 - [libuiohook](https://github.com/kwhat/libuiohook)
 - [RePoE](https://github.com/brather1ng/RePoE)
 - [poeprices.info](https://www.poeprices.info/)
