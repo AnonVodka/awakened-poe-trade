@@ -3,7 +3,7 @@
     class="p-2 border-dashed border border-gray-600 rounded mt-2">
     <div class="flex text-gray-400 leading-none">
       <div class="w-1/2"
-        >{{ t('trade_result.you_have') }} <span class="font-sans">×</span> {{ value.have.amount }} <i class="fas fa-arrow-right text-gray-600 px-1 text-xs"></i> {{ value.have.price }}</div>
+      >{{ t('trade_result.you_have') }} <span class="font-sans">×</span> {{ value.have.amount }} <i class="fas fa-arrow-right text-gray-600 px-1 text-xs"></i> {{ value.have.price }}</div>
       <div class="w-1/2 pl-2" v-if="value.oneStack"
         >{{ t('trade_result.stack') }} <span class="font-sans">×</span> {{ value.oneStack.amount }} <i class="fas fa-arrow-right text-gray-600 px-1 text-xs"></i> {{ value.oneStack.price }}</div>
     </div>
@@ -29,14 +29,14 @@ export default defineComponent({
       required: true
     }
   },
-  setup (props) {
+  setup(props) {
     const { findPriceByQuery, autoCurrency } = usePoeninja()
 
     function getPriceFor (n: number) {
       const one = findPriceByQuery(getDetailsId(props.item)!)!
 
       const price = (props.item.info.refName === 'Divine Orb')
-        ? { min: n * one.chaos, max: n * one.chaos, currency: 'chaos' as const }
+        ? { min: n * one.chaos, max: n * one.chaos, currency: 'exalted' as const }
         : autoCurrency(n * one.chaos)
 
       return `${displayRounding(price.min)} ${price.currency}`

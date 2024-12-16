@@ -1,8 +1,8 @@
 import { CLIENT_STRINGS as _$ } from '@/assets/data'
 import type { ParsedStat } from './stat-translations'
 import { ModifierType } from './modifiers'
-import { removeLinesEnding } from './Parser'
-import { STAT_BY_REF } from './../assets/data/index'
+import { removeLinesEnding, removeLineEnding } from './Parser'
+import { STAT_BY_REF, STAT_BY_MATCH_STR } from './../assets/data/index'
 
 export const SCOURGE_LINE = ' (scourge)'
 export const ENCHANT_LINE = ' (enchant)'
@@ -92,10 +92,29 @@ export function parseModInfoLine (line: string, type: ModifierType): ModifierInf
 
 export function isModInfoLine(line: string): boolean {
   // replace numbers with # and search string by reference in stats info
-  const modText = line.replace(/\d+/g, '#')
-  const matched = STAT_BY_REF(modText);
+  let modText = line.replace(/\d+/g, '#')
+  console.log(modText)
+  // remove possible suffixes
+  if (modText.endsWith(SCOURGE_LINE)) {
+    modText = removeLineEnding(modText, SCOURGE_LINE)
+  } else if (modText.endsWith(ENCHANT_LINE)) {
+    modText = removeLineEnding(modText, ENCHANT_LINE)
+  } else if (modText.endsWith(IMPLICIT_LINE)) {
+    modText = removeLineEnding(modText, IMPLICIT_LINE)
+  } else if (modText.endsWith(FRACTURED_LINE)) {
+    modText = removeLineEnding(modText, FRACTURED_LINE)
+  } else if (modText.endsWith(CRAFTED_LINE)) {
+    modText = removeLineEnding(modText, CRAFTED_LINE)
+  } else if (modText.endsWith(RUNE_LINE)) {
+    modText = removeLineEnding(modText, RUNE_LINE)
+  }
+
+  let matched = STAT_BY_MATCH_STR(modText);
+  // if we didn't find it yet, try to find it by adding a "+" to the start
+  if (matched == undefined) {
+    matched = STAT_BY_MATCH_STR('+' + modText);
+  }
   return matched != undefined;
-  // return line.startsWith('{') && line.endsWith('}')
 }
 
 interface GroupedModLines {

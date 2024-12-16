@@ -56,7 +56,7 @@
     "has_empty_suffix": "Suffix",
     "item_level": "Item Level: {0}",
     "stock": "Stock: {0}",
-    "map_tier": "Map Tier: {0}",
+    "map_tier": "Waystone Tier: {0}",
     "area_level": "Area Level: {0}",
     "heist_wings_revealed": "Wings Revealed: {0}",
     "linked_sockets": "Links: {0}",
@@ -156,6 +156,7 @@
     "tag_scourge": "scourge",
     "tag_enchant": "enchant",
     "tag_variant": "variant",
+    "tag_rune": "rune",
     "tag_corrupted": "corrupted",
     "tag_synthesised": "synthesised",
     "tag_eldritch": "eldritch",
@@ -184,8 +185,7 @@
     "currency_any": "Any Currency",
     "currency_only_exalted": "Exalted Orb",
     "currency_only_chaos": "Chaos Orb",
-    "currency_only_div": "Divine Orb",
-    "currency_chaos_div": "Both Orbs"
+    "currency_only_div": "Divine Orb"
   },
   "widget": {
     "title": "widget title",

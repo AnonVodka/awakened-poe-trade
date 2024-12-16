@@ -121,6 +121,8 @@ async function loadStats (language: string) {
 
   STAT_BY_MATCH_STR = function (matchStr: string) {
     let start = dataBinarySearch(indexMatcher, Number(fnv1a(matchStr, { size: 32 })), 0, INDEX_WIDTH)
+    console.log(start, matchStr);
+    
     if (start === -1) return undefined
     start = indexMatcher[start * INDEX_WIDTH + 1]
     const end = ndjson.indexOf('\n', start)
@@ -153,7 +155,8 @@ export async function init (lang: string) {
   await loadForLang(lang)
 
   for (const text of DELAYED_STAT_VALIDATION) {
-    if (STAT_BY_REF(text) == null) {
+    // if (STAT_BY_REF(text) == null) {
+    if (STAT_BY_MATCH_STR(text) == null) {
       throw new Error(`Cannot find stat: ${text}`)
     }
   }

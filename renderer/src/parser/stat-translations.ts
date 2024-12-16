@@ -133,8 +133,20 @@ function * _statPlaceholderGenerator (stat: string) {
 
 export function tryParseTranslation (stat: StatString, modType: ModifierType): ParsedStat | undefined {
   for (const combination of _statPlaceholderGenerator(stat.string)) {
-    const found = STAT_BY_MATCH_STR(combination.stat)
-    if (!found || !found.stat.trade.ids[modType]) {
+    let modText = combination.stat;
+    let found = STAT_BY_MATCH_STR(modText)
+
+    // if (!found) {
+    //   modText = combination.stat.replace(/\d+/g, '#')
+    //   found = STAT_BY_MATCH_STR(modText);
+    //   if (!found) {
+    //     found = STAT_BY_MATCH_STR('+' + modText);
+    //   }
+    // }
+    
+    console.log(found);
+    if (!found || !found.stat.trade.ids || !found.stat.trade.ids[modType]) {
+      console.log(combination.stat + " not found");
       continue
     }
 
@@ -217,4 +229,18 @@ export function getRollOrMinmaxAvg (values: number[]): number {
   } else {
     return values[0]
   }
+}
+
+export function resolveStatTranslation(line: string): string {
+  if (!line.includes('['))
+    return line
+
+  let start = line.indexOf('[')
+  let end = line.indexOf(']')
+  let translation = line.slice(start + 1, end)
+
+  if (translation.includes("|"))
+    translation = translation.split("|")[1] // [0] is the internal string, [1] is the translation
+
+  return line.slice(0, start) + translation + line.slice(end + 1)
 }

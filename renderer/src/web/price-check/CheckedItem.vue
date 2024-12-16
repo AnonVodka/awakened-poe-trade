@@ -3,11 +3,10 @@
     <filter-name
       :filters="itemFilters"
       :item="item" />
-    <price-prediction v-if="showPredictedPrice" class="mb-4"
-      :item="item" />
+    <!-- <price-prediction v-if="showPredictedPrice" class="mb-4" :item="item" />
     <price-trend v-else
       :item="item"
-      :filters="itemFilters" />
+      :filters="itemFilters" /> -->
     <filters-block
       ref="filtersComponent"
       :filters="itemFilters"
@@ -34,7 +33,7 @@
       <trade-links v-if="tradeAPI === 'trade'"
         :get-link="makeTradeLink" />
     </div>
-    <stack-value :filters="itemFilters" :item="item"/>
+    <!-- <stack-value :filters="itemFilters" :item="item"/> -->
     <div v-if="showSupportLinks" class="mt-auto border border-dashed p-2">
       <div class="mb-1">{{ t('Support development on') }} <a href="https://patreon.com/awakened_poe_trade" class="inline-flex align-middle animate__animated animate__fadeInRight" target="_blank"><img class="inline h-5" src="/images/Patreon.svg"></a></div>
       <i18n-t keypath="app.thanks_3rd_party" tag="div">
@@ -56,8 +55,8 @@ import { apiToSatisfySearch, getTradeEndpoint } from './trade/common'
 import PriceTrend from './trends/PriceTrend.vue'
 import FiltersBlock from './filters/FiltersBlock.vue'
 import { createPresets } from './filters/create-presets'
-import PricePrediction from './price-prediction/PricePrediction.vue'
-import StackValue from './stack-value/StackValue.vue'
+// import PricePrediction from './price-prediction/PricePrediction.vue'
+// import StackValue from './stack-value/StackValue.vue'
 import FilterName from './filters/FilterName.vue'
 import { CATEGORY_TO_TRADE_ID, createTradeRequest } from './trade/pathofexile-trade'
 import { AppConfig } from '@/web/Config'
@@ -70,14 +69,14 @@ let _showSupportLinksCounter = 0
 export default defineComponent({
   name: 'CheckedItem',
   components: {
-    PricePrediction,
+    // PricePrediction, // depends on poeprices.info
     TradeListing,
     TradeBulk,
     TradeLinks,
     PriceTrend,
     FiltersBlock,
-    FilterName,
-    StackValue
+    FilterName
+    // StackValue // depends on poe ninja prices
   },
   props: {
     item: {

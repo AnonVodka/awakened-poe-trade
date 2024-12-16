@@ -9,7 +9,7 @@ export default {
   RARITY_CURRENCY: 'Currency',
   RARITY_DIVCARD: 'Divination Card',
   RARITY_QUEST: 'Quest',
-  MAP_TIER: 'Map Tier: ',
+  MAP_TIER: 'Waystone Tier: ',
   RARITY: 'Rarity: ',
   ITEM_CLASS: 'Item Class: ',
   ITEM_LEVEL: 'Item Level: ',

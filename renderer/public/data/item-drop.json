@@ -546,12 +546,9 @@
   },
   {
     "query": [
-      "ITEM::Eldritch Orb of Annulment",
-      "ITEM::Eldritch Chaos Orb",
-      "ITEM::Eldritch Exalted Orb",
       "ITEM::Orb of Annulment",
-      "ITEM::Exalted Orb",
-      "ITEM::Veiled Orb"
+      "ITEM::Divine Orb",
+      "ITEM::Exalted Orb"
     ],
     "items": []
   },

@@ -53,7 +53,7 @@
     <webview v-if="isBrowserShown" ref="iframeEl"
       class="pointer-events-auto flex-1"
       width="100%" height="100%" />
-    <div v-else class="layout-column flex-1 min-w-0">
+    <!-- <div v-else class="layout-column flex-1 min-w-0">
       <div class="flex" :class="{
         'flex-row': clickPosition === 'stash',
         'flex-row-reverse': clickPosition === 'inventory'
@@ -62,7 +62,7 @@
           :item="item.value" :click-position="clickPosition" />
         <rate-limiter-state class="pointer-events-auto" />
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -79,7 +79,7 @@ import { usePoeninja } from '../background/Prices'
 import { useLeagues } from '@/web/background/Leagues'
 import { AppConfig } from '@/web/Config'
 import { ItemCategory, ItemRarity, parseClipboard, ParsedItem } from '@/parser'
-import RelatedItems from './related-items/RelatedItems.vue'
+// import RelatedItems from './related-items/RelatedItems.vue'
 import RateLimiterState from './trade/RateLimiterState.vue'
 import UnidentifiedResolver from './unidentified-resolver/UnidentifiedResolver.vue'
 import CheckPositionCircle from './CheckPositionCircle.vue'
@@ -95,7 +95,7 @@ export default defineComponent({
     CheckedItem,
     UnidentifiedResolver,
     BackgroundInfo,
-    RelatedItems,
+    // RelatedItems,
     RateLimiterState,
     CheckPositionCircle,
     ItemQuickPrice,

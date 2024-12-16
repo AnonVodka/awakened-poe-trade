@@ -8,7 +8,7 @@ import {
   BaseType
 } from '@/assets/data'
 import { ModifierType, sumStatsByModType } from './modifiers'
-import { linesToStatStrings, tryParseTranslation, getRollOrMinmaxAvg } from './stat-translations'
+import { linesToStatStrings, tryParseTranslation, getRollOrMinmaxAvg, resolveStatTranslation } from './stat-translations'
 import { ItemCategory } from './meta'
 import { IncursionRoom, ParsedItem, ItemInfluence, ItemRarity } from './ParsedItem'
 import { magicBasetype } from './magic-name'
@@ -175,6 +175,7 @@ function normalizeName (item: ParserState) {
 
 function findInDatabase (item: ParserState) {
   let info: BaseType[] | undefined
+  console.log(item)
   if (item.category === ItemCategory.DivinationCard) {
     info = ITEM_BY_REF('DIVINATION_CARD', item.name)
   } else if (item.category === ItemCategory.CapturedBeast) {
@@ -496,7 +497,10 @@ function parseQualityNested (section: string[], item: ParsedItem) {
 function parseArmour (section: string[], item: ParsedItem) {
   let isParsed: SectionParseResult = 'SECTION_SKIPPED'
 
-  for (const line of section) {
+  for (let line of section) {
+    // replace square brackets
+    line = resolveStatTranslation(line);
+    
     if (line.startsWith(_$.ARMOUR)) {
       item.armourAR = parseInt(line.slice(_$.ARMOUR.length), 10)
       isParsed = 'SECTION_PARSED'; continue
@@ -529,7 +533,8 @@ function parseArmour (section: string[], item: ParsedItem) {
 function parseWeapon (section: string[], item: ParsedItem) {
   let isParsed: SectionParseResult = 'SECTION_SKIPPED'
 
-  for (const line of section) {
+  for (let line of section) {
+    line = resolveStatTranslation(line);
     if (line.startsWith(_$.CRIT_CHANCE)) {
       item.weaponCRIT = parseFloat(line.slice(_$.CRIT_CHANCE.length))
       isParsed = 'SECTION_PARSED'; continue
@@ -941,12 +946,17 @@ function calcBasePercentile (item: ParsedItem) {
   // }
 }
 
+export function removeLineEnding (
+  line: string, ending: string
+): string {
+  return line.endsWith(ending)
+      ? line.slice(0, -ending.length)
+      : line
+  
+}
+
 export function removeLinesEnding (
   lines: readonly string[], ending: string
 ): string[] {
-  return lines.map(line =>
-    line.endsWith(ending)
-      ? line.slice(0, -ending.length)
-      : line
-  )
+  return lines.map(line => removeLineEnding(line, ending))
 }

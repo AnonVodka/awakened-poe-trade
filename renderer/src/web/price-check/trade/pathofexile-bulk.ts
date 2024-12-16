@@ -74,9 +74,8 @@ async function requestTradeResultList (body: TradeRequest, leagueId: string): Pr
       },
       body: JSON.stringify(body)
     })
-    console.log(response)
     adjustRateLimits(RATE_LIMIT_RULES.EXCHANGE, response.headers)
-
+    
     const _data = await response.json() as TradeResponse<SearchResult>
     if (_data.error) {
       throw new Error(_data.error.message)
@@ -152,12 +151,12 @@ export async function execBulkSearch (
   const offer = 0
   const results = Object.values(query.result)
     .filter(result => result.listing.offers.length === 1)
-
+  
   const resultByHave = have.map(tradeTag => {
     const resultsTag = results.filter(result => result.listing.offers[offer].exchange.currency === tradeTag)
 
     const loadedOnDemand = (
-      tradeTag === 'chaos' &&
+      tradeTag === 'exalted' &&
       resultsTag.length < SHOW_RESULTS &&
       query.total > API_FETCH_LIMIT
     )

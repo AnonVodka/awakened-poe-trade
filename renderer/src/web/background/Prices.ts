@@ -57,9 +57,9 @@ export const usePoeninja = createGlobalState(() => {
       const jsonBlob = await response.text()
 
       PRICES_DB = splitJsonBlob(jsonBlob)
-      const divine = findPriceByQuery({ ns: 'ITEM', name: 'Divine Orb', variant: undefined })
-      if (divine && divine.chaos >= 30) {
-        xchgRate.value = divine.chaos
+      const exalted = findPriceByQuery({ ns: 'ITEM', name: 'Exalted Orb', variant: undefined })
+      if (exalted && exalted.chaos >= 30) {
+        xchgRate.value = exalted.chaos
       }
       lastUpdateTime = Date.now()
     } finally {
